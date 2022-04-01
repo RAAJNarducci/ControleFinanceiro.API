@@ -1,13 +1,30 @@
 version: '3.4'
 
 services:
-  sqldata:
-    image: mcr.microsoft.com/mssql/server:2019-latest
-
-  identity.api:
-    image: ${REGISTRY:-controlefinanceiro}/identity.api:${PLATFORM:-linux}-${TAG:-latest}
+  creditcard.api:
+    image: creditcard-api
+    container_name: creditcard-api
+    networks:
+      - controle-financeiro-network
+    ports:
+      - 10000:80
     build:
       context: .
-      dockerfile: src/Services/Identity/Identity.API/Dockerfile
-    depends_on:
-      - sqldata
+      dockerfile: src/Services/CreditCard/CreditCard.API/Dockerfile
+  
+  banktransactions.api:
+    image: banktransactions-api
+    container_name: banktransactions-api
+    networks:
+      - controle-financeiro-network
+    ports:
+      - 10001:80
+    build:
+      context: .
+      dockerfile: src/Services/BankTransactions/BankTransactions.API/Dockerfile
+
+networks:
+  controle-financeiro-network:
+    external: true
+      
+    

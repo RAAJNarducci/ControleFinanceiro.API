@@ -4,6 +4,8 @@ services:
   mongodb:
     image: mongo
     container_name: mongo
+    networks:
+      - controle-financeiro-network
     ports:
       - "27017:27017"
     volumes:
@@ -75,6 +77,9 @@ services:
   
   sqldata:
     image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sqldata
+    networks: 
+      - controle-financeiro-network
     environment:
       - SA_PASSWORD=Pass@word
       - ACCEPT_EULA=Y
@@ -85,10 +90,11 @@ services:
 
 networks: 
   controle-financeiro-network:
-    driver: bridge
-
+    # driver: bridge
+    external: true
+      
 volumes:
   volume-mongodb:
     external: false
   controlefinanceiro-sqldata:
-    external: false
+    external: true

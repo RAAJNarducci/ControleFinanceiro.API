@@ -17,16 +17,4 @@ namespace CreditCard.API.Infrastructure
             builder.ApplyConfiguration(new CreditCardEntityTypeConfiguration());
         }
     }
-
-    public class CatalogContextDesignFactory : IDesignTimeDbContextFactory<CreditCardContext>
-    {
-        public CreditCardContext CreateDbContext(string[] args)
-        {
-            var optionsBuilder = new DbContextOptionsBuilder<CreditCardContext>()
-                //.UseSqlServer("Server=sqldata;Database=ControleFinanceiro.CreditCard;User Id=sa;Password=Pass@word;");
-                .UseSqlServer("Server=tcp:127.0.0.1,5433;Database=ControleFinanceiro.CreditCard;User Id=sa;Password=Pass@word;");
-
-            return new CreditCardContext(optionsBuilder.Options);
-        }
-    }
 }

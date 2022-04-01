@@ -32,8 +32,8 @@ namespace BankTransactions.API.Controllers
         public async Task<IActionResult> Get()
         {
             var jobId = BackgroundJob.Schedule(
-                () => Console.WriteLine("Delayed!"),
-                TimeSpan.FromMinutes(1));
+                () => TestHangFire(),
+                TimeSpan.FromSeconds(20));
 
             var command = new FindAllTransactionCommand();
             var response = await _mediator.Send(command);
@@ -75,6 +75,12 @@ namespace BankTransactions.API.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+
+        [NonAction]
+        public void TestHangFire()
+        {
+            Console.WriteLine("Test Hangfire");
         }
     }
 }

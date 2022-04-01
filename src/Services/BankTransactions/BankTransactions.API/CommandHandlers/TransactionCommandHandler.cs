@@ -4,6 +4,8 @@ using BankTransactions.API.Model;
 using BuildingBlocks.EventBusKafka;
 using Logs.Services;
 using MediatR;
+using MongoDB.Bson;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,6 +31,7 @@ namespace BankTransactions.API.CommandHandlers
         public async Task<bool> Handle(NewTransactionCommand request, CancellationToken cancellationToken)
         {
             Transaction transaction = request.Transaction;
+            transaction.Id = ObjectId.GenerateNewId().ToString();
             await _transactionRepository.AddTransactionAsync(transaction);
 
             await _loggerService.LogInformation(new Logs.LoggerRequest
