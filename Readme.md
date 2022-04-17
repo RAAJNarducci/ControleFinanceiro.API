@@ -8,10 +8,18 @@
 - ELK (Elastic, Kibana)
 - Hangfire
 
-
-### CreditCard.API
-
-#### Migrations
+## Migrations
 - dotnet ef migrations add Initial
 - dotnet ef migrations remove
 - dotnet ef database update
+
+### CreditCard.API
+API CRUD com persistência SQL Server
+
+### BankTransactions.API
+API com persistência MongoDB CQRS + Produtor Kafka
+
+### Wallet.API
+API com persistência MongoDB CQRS + Consumidor Kafka
+
+

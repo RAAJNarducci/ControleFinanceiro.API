@@ -1,7 +1,4 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-
-namespace BankTransactions.API.Model
+﻿namespace BankTransactions.API.Model
 {
     public class Bank
     {
@@ -14,5 +11,10 @@ namespace BankTransactions.API.Model
     public enum EnumBankCode
     {
         ITAU = 033, BRADESCO = 041, SANTANDER = 011
+    }
+
+    public enum EnumTypeTransaction
+    {
+        Debit, Credit
     }
 }

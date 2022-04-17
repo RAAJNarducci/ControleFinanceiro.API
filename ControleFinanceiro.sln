@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 16.0.31112.23
+VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - BuildingBlocks", "0 - BuildingBlocks", "{BF523D4D-5ADC-4D3A-A5AB-AC7B34CAB3C5}"
 EndProject
@@ -33,7 +33,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Wallet", "4 - Wallet", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wallet.API", "src\Services\Wallet\Wallet.API\Wallet.API.csproj", "{B16A85D1-75FE-4368-AAE4-0F7A07DF835F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wallet.Consumer", "src\Services\Wallet\Wallet.Consumer\Wallet.Consumer.csproj", "{F6E27373-F25F-4A65-A5EF-3BE567D619EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wallet.Consumer", "src\Services\Wallet\Wallet.Consumer\Wallet.Consumer.csproj", "{F6E27373-F25F-4A65-A5EF-3BE567D619EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
