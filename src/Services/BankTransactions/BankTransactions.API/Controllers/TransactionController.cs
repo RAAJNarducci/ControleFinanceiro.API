@@ -31,9 +31,8 @@ namespace BankTransactions.API.Controllers
         [ProducesResponseType(typeof(IEnumerable<Transaction>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Get()
         {
-            var jobId = BackgroundJob.Schedule(
-                () => TestHangFire(),
-                TimeSpan.FromSeconds(20));
+            var jobId = BackgroundJob.Enqueue(
+                () => TestHangFire());
 
             var command = new FindAllTransactionCommand();
             var response = await _mediator.Send(command);
@@ -67,20 +66,10 @@ namespace BankTransactions.API.Controllers
             return Ok(response);
         }
 
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-
         [NonAction]
         public void TestHangFire()
         {
-            Console.WriteLine("Test Hangfire");
+            Console.WriteLine($"Test Hangfire {DateTime.Now}");
         }
     }
 }

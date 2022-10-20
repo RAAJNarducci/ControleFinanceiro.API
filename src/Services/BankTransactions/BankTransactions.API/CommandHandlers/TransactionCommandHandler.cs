@@ -2,6 +2,7 @@
 using BankTransactions.API.Infrastructure.Repositories;
 using BankTransactions.API.Model;
 using BuildingBlocks.EventBusKafka;
+using Hangfire;
 using Logs.Services;
 using MediatR;
 using MongoDB.Bson;
@@ -30,25 +31,42 @@ namespace BankTransactions.API.CommandHandlers
 
         public async Task<bool> Handle(NewTransactionCommand request, CancellationToken cancellationToken)
         {
-            Transaction transaction = request.Transaction;
-            transaction.Id = ObjectId.GenerateNewId().ToString();
-            await _transactionRepository.AddTransactionAsync(transaction);
-
-            await _loggerService.LogInformation(new Logs.LoggerRequest
+            try
             {
-                ApplicationName = "Transactions.API",
-                Message = "Transação adicionada",
-            });
+                Transaction transaction = request.Transaction;
+                transaction.Id = ObjectId.GenerateNewId().ToString();
+                await _transactionRepository.AddTransactionAsync(transaction);
 
-            await _bus.PublishAsync(request.Transaction.Id, transaction);
+                await _loggerService.LogInformation(new Logs.LoggerRequest
+                {
+                    ApplicationName = "Transactions.API",
+                    Message = "Transação adicionada",
+                });
 
-            await _loggerService.LogInformation(new Logs.LoggerRequest
+                await _bus.PublishAsync(request.Transaction.Id, transaction);
+
+                await _loggerService.LogInformation(new Logs.LoggerRequest
+                {
+                    ApplicationName = "Transactions.API",
+                    Message = $"Evento da transação {transaction.Id} publicada",
+                });
+
+                return true;
+            }
+            catch (Exception ex)
             {
-                ApplicationName = "Transactions.API",
-                Message = $"Evento da transação {transaction.Id} publicada",
-            });
+                await _loggerService.LogInformation(new Logs.LoggerRequest
+                {
+                    ApplicationName = "Transactions.API",
+                    Message = $"Erro {ex.Message}, agendado no hangfire",
+                });
 
-            return true;
+                var jobId = BackgroundJob.Schedule(
+                    () => Handle(request, cancellationToken),
+                    TimeSpan.FromSeconds(30));
+
+                return false;
+            }
         }
 
         public async Task<IEnumerable<Transaction>> Handle(FindAllTransactionCommand request, CancellationToken cancellationToken)
